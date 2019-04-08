@@ -14,7 +14,9 @@ BG(surv_value, h, lower = c(0.001, 0.001))
 \item{lower}{lower limit used in \code{R} \code{optim} rotuine. Default is \code{c(1e-3,1e-3)}.}
 }
 \value{
-\item{fitted:}{Fitted Values based on historical data} \item{max.likelihood:}{Maximum Likelihood of Beta Geometric}
+\item{fitted:}{Fitted values based on historical data}
+\item{projected:}{Projected \code{h} values based on historical data}
+\item{max.likelihood:}{Maximum Likelihood of Beta Geometric}
 \item{params - a, b:}{Returns a and b paramters from maximum likelihood estimation for beta distribution}
 }
 \description{
@@ -27,5 +29,5 @@ BG(surv_value,h)
 
 }
 \references{
-{Fader  PS and Hardie BGS (2007), How to project customer retention. Volume 21, Issue 1. Journal of Interactive Marketing}
+{Fader P, Hardie B. How to project customer retention. Journal of Interactive Marketing. 2007;21(1):76-90.}
 }

@@ -8,7 +8,9 @@
 #' @param upper upper limit used in \code{R} \code{optim} rotuine. Default is \code{c(0.99999,10000,0.999999,10000,0.99999)}.
 #'
 #' @return
-#' \item{fitted:}{Fitted Values based on historical data} \item{max.likelihood:}{Maximum Likelihood of LCW}
+#' \item{fitted:}{Fitted Values based on historical data}
+#' \item{projected:}{Projected \code{h} values based on historical data}
+#' \item{max.likelihood:}{Maximum Likelihood of LCW}
 #' \item{params - t1,t2,c1,c2,w:}{Returns t1,c1,t2,c2,w paramters from maximum likelihood estimation}
 #'
 #' @examples
@@ -16,9 +18,8 @@
 #' h <- 6
 #' LCW(surv_value,h)
 #'
-#' @references {Fader  PS and Hardie BGS (2007), How to project customer retention. Volume 21, Issue 1. Journal of Interactive Marketing}
-#' @references {Fader  PS and Hardie BGS et al. (2018), How to Project Customer Retention Revisited: The Role of Duration Dependence. Volume 43, Journal of Interactive Marketing}
-#'
+#' @references {Fader P, Hardie B. How to project customer retention. Journal of Interactive Marketing. 2007;21(1):76-90.}
+#' @references {Fader P, Hardie B, Liu Y, Davin J, Steenburgh T. "How to Project Customer Retention" Revisited: The Role of Duration Dependence. Journal of Interactive Marketing. 2018;43:1-16.}
 #' @export
 
 
@@ -59,9 +60,14 @@ LCW <- function(surv_value,h, lower = c(0.001,0.001,0.001,0.001,0.001),upper = c
     return(-ll)
   }
 
-
-  max.lik.cw  <- stats::optim(c(0.5,2,0.5,1,0.6),fn=cw.lik,lower = lower,
-                         upper = upper,method="L-BFGS-B")
+  max.lik.cw <- tryCatch({
+    stats::optim(c(0.5,2,0.5,1,0.6),fn=cw.lik,lower = lower,
+                 upper = upper,method="L-BFGS-B")
+  }, error = function(error_condition) {
+    message("Note: stats::optim not working switching to nloptr::slsqp for maximum likelihood optimization")
+    nloptr::slsqp(c(0.5,2,0.5,1,0.6),fn=cw.lik,lower = lower,
+                  upper = upper)
+  })
 
 
   t1 <- max.lik.cw$par[1]

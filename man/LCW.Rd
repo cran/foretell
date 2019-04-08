@@ -17,7 +17,9 @@ LCW(surv_value, h, lower = c(0.001, 0.001, 0.001, 0.001, 0.001),
 \item{upper}{upper limit used in \code{R} \code{optim} rotuine. Default is \code{c(0.99999,10000,0.999999,10000,0.99999)}.}
 }
 \value{
-\item{fitted:}{Fitted Values based on historical data} \item{max.likelihood:}{Maximum Likelihood of LCW}
+\item{fitted:}{Fitted Values based on historical data}
+\item{projected:}{Projected \code{h} values based on historical data}
+\item{max.likelihood:}{Maximum Likelihood of LCW}
 \item{params - t1,t2,c1,c2,w:}{Returns t1,c1,t2,c2,w paramters from maximum likelihood estimation}
 }
 \description{
@@ -30,7 +32,7 @@ LCW(surv_value,h)
 
 }
 \references{
-{Fader  PS and Hardie BGS (2007), How to project customer retention. Volume 21, Issue 1. Journal of Interactive Marketing}
+{Fader P, Hardie B. How to project customer retention. Journal of Interactive Marketing. 2007;21(1):76-90.}
 
-{Fader  PS and Hardie BGS et al. (2018), How to Project Customer Retention Revisited: The Role of Duration Dependence. Volume 43, Journal of Interactive Marketing}
+{Fader P, Hardie B, Liu Y, Davin J, Steenburgh T. "How to Project Customer Retention" Revisited: The Role of Duration Dependence. Journal of Interactive Marketing. 2018;43:1-16.}
 }

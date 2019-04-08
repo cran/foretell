@@ -7,7 +7,9 @@
 #' @param lower lower limit used in \code{R} \code{optim} rotuine. Default is \code{c(1e-3,1e-3)}.
 #'
 #' @return
-#' \item{fitted:}{Fitted Values based on historical data} \item{max.likelihood:}{Maximum Likelihood of Beta Geometric}
+#' \item{fitted:}{Fitted values based on historical data}
+#' \item{projected:}{Projected \code{h} values based on historical data}
+#' \item{max.likelihood:}{Maximum Likelihood of Beta Geometric}
 #' \item{params - a, b:}{Returns a and b paramters from maximum likelihood estimation for beta distribution}
 #'
 #' @examples
@@ -15,7 +17,7 @@
 #' h <- 6
 #' BG(surv_value,h)
 #'
-#' @references {Fader  PS and Hardie BGS (2007), How to project customer retention. Volume 21, Issue 1. Journal of Interactive Marketing}
+#' @references {Fader P, Hardie B. How to project customer retention. Journal of Interactive Marketing. 2007;21(1):76-90.}
 #' @export
 
 
@@ -53,7 +55,12 @@ BG <- function(surv_value,h,lower = c(1e-3,1e-3)){
   }
 
 
-  max.lik.sgb <- stats::optim(c(1,2),fn=bg.log.lik,lower = lower,method="L-BFGS-B")
+  max.lik.sgb <- tryCatch({
+    stats::optim(c(1,2),fn=bg.log.lik,lower = lower,method="L-BFGS-B")
+  }, error = function(error_condition) {
+    message("Note: stats::optim not working switching to nloptr::slsqp for maximum likelihood optimization")
+    nloptr::slsqp(c(1,2),fn=bg.log.lik,lower = lower)
+  })
 
 
   a <- max.lik.sgb$par[1]
